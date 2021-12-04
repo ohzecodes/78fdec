@@ -51,7 +51,7 @@ export const login = (credentials) => async (dispatch) => {
     dispatch(gotUser(data));
     socket.emit("go-online", data.id);
   } catch (error) {
-    console.error(error);
+    console.error(error.response);
     dispatch(gotUser({ error: error.response.data.error || "Server Error" }));
   }
 };
@@ -86,27 +86,26 @@ const saveMessage = async (body) => {
 const sendMessage = (data, body) => {
   socket.emit("new-message", {
     message: data.message,
-    recipientId: body.recipientId,
+    recipientId: data.recipientId,
+    conversationId: data.conversationId,
     sender: data.sender,
   });
 };
 
 // message format to send: {recipientId, text, conversationId}
 // conversationId will be set to null if its a brand new conversation
-export const postMessage = (body) => (dispatch) => {
-  try {
-    const data = saveMessage(body);
+export const postMessage = (body) => async (dispatch) => {
+  console.log("The", body);
 
-    if (!body.conversationId) {
-      dispatch(addConversation(body.recipientId, data.message));
-    } else {
-      dispatch(setNewMessage(data.message));
-    }
+  const data = await saveMessage(body);
 
-    sendMessage(data, body);
-  } catch (error) {
-    console.error(error);
+  if (!body.conversationId) {
+    dispatch(addConversation(body.recipientId, data.message));
+  } else {
+    dispatch(setNewMessage(data.message));
   }
+
+  sendMessage(data, body);
 };
 
 export const searchUsers = (searchTerm) => async (dispatch) => {
