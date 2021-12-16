@@ -25,6 +25,8 @@ async function seed() {
   await db.sync({ force: true });
   console.log("db synced!");
 
+  await f();
+
   const thomas = await User.create({
     username: "thomas",
     email: "thomas@email.com",
@@ -139,11 +141,6 @@ async function seed() {
   ]);
 
   console.log(`seeded users and messages`);
-  try {
-    f();
-  } catch (error) {
-    console.log(error);
-  }
 }
 
 async function runSeed() {
