@@ -21,7 +21,6 @@ const f = async () => {
 };
 
 async function seed() {
-  f();
   await db.sync({ force: true });
   console.log("db synced!");
 
@@ -139,6 +138,7 @@ async function seed() {
   ]);
 
   console.log(`seeded users and messages`);
+  f();
 }
 
 async function runSeed() {
