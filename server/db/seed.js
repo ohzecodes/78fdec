@@ -3,7 +3,24 @@ const { User } = require("./models");
 const Conversation = require("./models/conversation");
 const Message = require("./models/message");
 
+const f = async () => {
+  const dt = await queryInterface.describeTable("messages");
+  if (Object.keys(dt).includes("hasRead") != true) {
+    try {
+      await queryInterface.addColumn("messages", "hasRead", {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
+      });
+    } catch (error) {
+      console.log("e", error);
+    }
+  } else {
+  }
+};
+
 async function seed() {
+  f();
   await db.sync({ force: true });
   console.log("db synced!");
 
