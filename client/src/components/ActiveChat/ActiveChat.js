@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@material-ui/core";
 import { Input, Header, Messages } from "./index";
@@ -8,7 +8,7 @@ const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     flexGrow: 8,
-    flexDirection: "column"
+    flexDirection: "column",
   },
   chatContainer: {
     marginLeft: 41,
@@ -16,14 +16,19 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flexDirection: "column",
     flexGrow: 1,
-    justifyContent: "space-between"
-  }
+    justifyContent: "space-between",
+  },
 }));
 
 const ActiveChat = (props) => {
   const classes = useStyles();
   const { user } = props;
-  const conversation = props.conversation || {};
+  let conversation = props.conversation || {};
+  // console.log(props);
+  const [id, setid] = useState(conversation.id || null);
+  useEffect(() => {
+    setid(conversation.id);
+  }, [conversation.id, props]);
 
   return (
     <Box className={classes.root}>
@@ -38,11 +43,17 @@ const ActiveChat = (props) => {
               messages={conversation.messages}
               otherUser={conversation.otherUser}
               userId={user.id}
+              cid={id}
             />
             <Input
               otherUser={conversation.otherUser}
-              conversationId={conversation.id}
+              cid={conversation.id}
+              convodefined={() => {
+                if (typeof conversation != "undefined") return true;
+                else return false;
+              }}
               user={user}
+              getText={props.getText}
             />
           </Box>
         </>
@@ -57,8 +68,9 @@ const mapStateToProps = (state) => {
     conversation:
       state.conversations &&
       state.conversations.find(
-        (conversation) => conversation.otherUser.username === state.activeConversation
-      )
+        (conversation) =>
+          conversation.otherUser.username === state.activeConversation
+      ),
   };
 };
 

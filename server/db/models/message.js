@@ -1,4 +1,4 @@
-const Sequelize = require("sequelize");
+const { Sequelize, DataTypes } = require("sequelize");
 const db = require("../db");
 
 const Message = db.define("message", {
@@ -9,6 +9,10 @@ const Message = db.define("message", {
   senderId: {
     type: Sequelize.INTEGER,
     allowNull: false,
+  },
+  hasRead: {
+    type: Sequelize.BOOLEAN,
+    allowNull: true,
   },
 });
 

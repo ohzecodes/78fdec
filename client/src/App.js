@@ -6,6 +6,15 @@ import store from "./store";
 
 import { theme } from "./themes/theme";
 import Routes from "./routes";
+// import { io } from "socket.io-client";
+
+// const socket = io.connect("http://localhost:3001");
+// console.log("socket", socket);
+// // socket.on("connect",
+
+// // socket.on("disconnect", () => {
+// //   console.log(socket.id);
+// // });
 
 function App() {
   return (

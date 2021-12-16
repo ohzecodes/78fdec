@@ -51,7 +51,7 @@ export const login = (credentials) => async (dispatch) => {
     dispatch(gotUser(data));
     socket.emit("go-online", data.id);
   } catch (error) {
-    console.error(error);
+    console.error(error.response);
     dispatch(gotUser({ error: error.response.data.error || "Server Error" }));
   }
 };
@@ -73,11 +73,19 @@ export const fetchConversations = () => async (dispatch) => {
   try {
     const { data } = await axios.get("/api/conversations");
     dispatch(gotConversations(data));
+    // console.log("t", data);
   } catch (error) {
     console.error(error);
   }
 };
 
+export const setTrue = async (Cid, SId) => {
+  const { data } = await axios.post(
+    `/api/messages/setTrue/${Cid}/${SId}`,
+    true
+  );
+  return data;
+};
 const saveMessage = async (body) => {
   const { data } = await axios.post("/api/messages", body);
   return data;
@@ -86,27 +94,24 @@ const saveMessage = async (body) => {
 const sendMessage = (data, body) => {
   socket.emit("new-message", {
     message: data.message,
-    recipientId: body.recipientId,
+    recipientId: data.recipientId,
+    conversationId: data.conversationId,
     sender: data.sender,
   });
 };
 
 // message format to send: {recipientId, text, conversationId}
 // conversationId will be set to null if its a brand new conversation
-export const postMessage = (body) => (dispatch) => {
-  try {
-    const data = saveMessage(body);
+export const postMessage = (body) => async (dispatch) => {
+  const data = await saveMessage(body);
 
-    if (!body.conversationId) {
-      dispatch(addConversation(body.recipientId, data.message));
-    } else {
-      dispatch(setNewMessage(data.message));
-    }
-
-    sendMessage(data, body);
-  } catch (error) {
-    console.error(error);
+  if (!body.conversationId) {
+    dispatch(addConversation(body.recipientId, data.message));
+  } else {
+    dispatch(setNewMessage(data.message));
   }
+
+  sendMessage(data, body);
 };
 
 export const searchUsers = (searchTerm) => async (dispatch) => {
