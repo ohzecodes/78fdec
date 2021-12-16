@@ -11,7 +11,7 @@ require("dotenv");
 //   logging: false,
 // });
 const { Database_URL } = process.env;
-
+Database_URL=Database_URL.toString();
 const Sequelize = require("sequelize");
 
 const db = new Sequelize(Database_URL, {
