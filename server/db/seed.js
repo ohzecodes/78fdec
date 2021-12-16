@@ -5,19 +5,20 @@ const Message = require("./models/message");
 
 const queryInterface = db.getQueryInterface();
 const f = async () => {
-  const dt = await queryInterface.describeTable("Messages");
-  if (Object.keys(dt).includes("hasRead") != true) {
-    try {
-      await queryInterface.addColumn("Messages", "hasRead", {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-        allowNull: false,
-      });
-    } catch (error) {
-      console.log("e", error);
-    }
-  } else {
+  // const dt = await queryInterface.describeTable("Message");
+  // if (Object.keys(dt).includes("hasRead") != true) {
+  try {
+    await queryInterface.addColumn("Message", "hasRead", {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      allowNull: false,
+    });
+  } catch (error) {
+    console.log("e", error);
   }
+  // }
+  //  else {
+  // }
 };
 
 async function seed() {
