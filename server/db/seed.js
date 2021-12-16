@@ -3,6 +3,7 @@ const { User } = require("./models");
 const Conversation = require("./models/conversation");
 const Message = require("./models/message");
 
+const queryInterface = db.getQueryInterface();
 const f = async () => {
   const dt = await queryInterface.describeTable("messages");
   if (Object.keys(dt).includes("hasRead") != true) {
