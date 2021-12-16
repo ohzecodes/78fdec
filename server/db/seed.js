@@ -139,7 +139,11 @@ async function seed() {
   ]);
 
   console.log(`seeded users and messages`);
-  f();
+  try {
+    f();
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function runSeed() {
