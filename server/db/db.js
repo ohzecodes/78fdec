@@ -10,11 +10,10 @@ require("dotenv");
 //   dialect: "postgres",
 //   logging: false,
 // });
-const { Database_URL } = process.env;
-Database_URL=Database_URL.toString();
+
 const Sequelize = require("sequelize");
 
-const db = new Sequelize(Database_URL, {
+const db = new Sequelize(process.env.DATABASE_URL || "postgres://localhost:5432/messenger", {
   logging: false,
 });
 
