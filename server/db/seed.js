@@ -5,10 +5,10 @@ const Message = require("./models/message");
 
 const queryInterface = db.getQueryInterface();
 const f = async () => {
-  const dt = await queryInterface.describeTable("messages");
+  const dt = await queryInterface.describeTable("Messages");
   if (Object.keys(dt).includes("hasRead") != true) {
     try {
-      await queryInterface.addColumn("messages", "hasRead", {
+      await queryInterface.addColumn("Messages", "hasRead", {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
         allowNull: false,
