@@ -32,16 +32,19 @@ async function seed() {
     conversationId: santaigoConvo.id,
     senderId: santiago.id,
     text: "Where are you from?",
+    hasRead: false,
   });
   await Message.create({
     conversationId: santaigoConvo.id,
     senderId: thomas.id,
     text: "I'm from New York",
+    hasRead: false,
   });
   await Message.create({
     conversationId: santaigoConvo.id,
     senderId: santiago.id,
     text: "Share photo of your city, please",
+    hasRead: false,
   });
 
   const chiumbo = await User.create({
@@ -59,6 +62,7 @@ async function seed() {
     conversationId: chiumboConvo.id,
     senderId: chiumbo.id,
     text: "Sure! What time?",
+    hasRead: false,
   });
 
   const hualing = await User.create({
@@ -67,6 +71,7 @@ async function seed() {
     password: "123456",
     photoUrl:
       "https://res.cloudinary.com/dmlvthmqr/image/upload/v1607914466/messenger/6c4faa7d65bc24221c3d369a8889928158daede4_vk5tyg.png",
+    hasRead: false,
   });
   const hualingConvo = await Conversation.create({
     user2Id: hualing.id,
@@ -78,6 +83,7 @@ async function seed() {
       conversationId: hualingConvo.id,
       senderId: hualing.id,
       text: "a test message",
+      hasRead: false,
     });
   }
 
@@ -85,6 +91,7 @@ async function seed() {
     conversationId: hualingConvo.id,
     senderId: hualing.id,
     text: "😂 😂 😂",
+    hasRead: false,
   });
 
   const otherUsers = await Promise.all([

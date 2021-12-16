@@ -25,7 +25,13 @@ const SidebarContainer = (props) => {
     setSearchTerm(event.target.value);
   };
 
-  return <Sidebar handleChange={handleChange} searchTerm={searchTerm} />;
+  return (
+    <Sidebar
+      arrayofOBj={props.arrayofOBj}
+      handleChange={handleChange}
+      searchTerm={searchTerm}
+    />
+  );
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -35,7 +41,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     clearSearchedUsers: () => {
       dispatch(clearSearchedUsers());
-    }
+    },
   };
 };
 

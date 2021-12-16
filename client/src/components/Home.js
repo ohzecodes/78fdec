@@ -19,11 +19,15 @@ const Home = (props) => {
   const { user, logout, fetchConversations, conversations } = props;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [text, setText] = useState("");
+  const [count, setcount] = useState(0);
+  const getcount = (c) => {
+    setcount(c);
+  };
 
   let getText = (text) => {
     setText(text);
   };
-  console.log(text);
+  // console.log(text);
   useEffect(() => {
     if (user.id) {
       setIsLoggedIn(true);
@@ -40,6 +44,29 @@ const Home = (props) => {
     if (isLoggedIn) return <Redirect to="/login" />;
     return <Redirect to="/register" />;
   }
+  let arrayofOBj = [];
+
+  // console.log(props.conversations);
+
+  props.conversations.forEach((e) => {
+    let count = 0;
+    let Sid;
+    let Cid;
+    e.messages.forEach((f) => {
+      Sid = f.senderId;
+      Cid = f.conversationId;
+      if (f.hasRead == false && Sid !== user.id) {
+        count++;
+      }
+    });
+
+    let y = {
+      count: count,
+      senderId: Sid,
+      conversationId: Cid,
+    };
+    arrayofOBj.push(y);
+  });
 
   const handleLogout = async () => {
     await logout(user.id);
@@ -53,7 +80,7 @@ const Home = (props) => {
       </Button>
       <Grid container component="main" className={classes.root}>
         <CssBaseline />
-        <SidebarContainer />
+        <SidebarContainer arrayofOBj={arrayofOBj} />
         <ActiveChat getText={getText} />
       </Grid>
     </>

@@ -24,7 +24,7 @@ const ActiveChat = (props) => {
   const classes = useStyles();
   const { user } = props;
   let conversation = props.conversation || {};
-  console.log(props);
+  // console.log(props);
   const [id, setid] = useState(conversation.id || null);
   useEffect(() => {
     setid(conversation.id);

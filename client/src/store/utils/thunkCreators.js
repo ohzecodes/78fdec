@@ -73,11 +73,19 @@ export const fetchConversations = () => async (dispatch) => {
   try {
     const { data } = await axios.get("/api/conversations");
     dispatch(gotConversations(data));
+    // console.log("t", data);
   } catch (error) {
     console.error(error);
   }
 };
 
+export const setTrue = async (Cid, SId) => {
+  const { data } = await axios.post(
+    `/api/messages/setTrue/${Cid}/${SId}`,
+    true
+  );
+  return data;
+};
 const saveMessage = async (body) => {
   const { data } = await axios.post("/api/messages", body);
   return data;
@@ -95,8 +103,6 @@ const sendMessage = (data, body) => {
 // message format to send: {recipientId, text, conversationId}
 // conversationId will be set to null if its a brand new conversation
 export const postMessage = (body) => async (dispatch) => {
-  console.log("The", body);
-
   const data = await saveMessage(body);
 
   if (!body.conversationId) {

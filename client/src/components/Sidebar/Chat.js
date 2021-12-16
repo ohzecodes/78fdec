@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
 import { Box } from "@material-ui/core";
 import { BadgeAvatar, ChatContent } from "../Sidebar";
 import { makeStyles } from "@material-ui/core/styles";
 import { setActiveChat } from "../../store/activeConversation";
 import { connect } from "react-redux";
-
+import { setTrue } from "../../store/utils/thunkCreators";
 const useStyles = makeStyles((theme) => ({
   root: {
     borderRadius: 8,
@@ -14,18 +15,34 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     "&:hover": {
-      cursor: "grab"
-    }
-  }
+      cursor: "grab",
+    },
+  },
 }));
 
 const Chat = (props) => {
   const classes = useStyles();
-  const { conversation } = props;
+  const { conversation, arrayofOBj } = props;
   const { otherUser } = conversation;
+  // console.log(props);
 
+  let obj;
+  let c;
+  arrayofOBj.forEach((e) => {
+    if (e.conversationId === conversation.id) {
+      obj = e;
+      c = e.count;
+    }
+  });
+
+  const [count, setcount] = useState(c);
   const handleClick = async (conversation) => {
+    setcount(0);
     await props.setActiveChat(conversation.otherUser.username);
+    if (c !== 0) {
+      console.log("set");
+      await setTrue(conversation.id, obj.senderId);
+    }
   };
 
   return (
@@ -36,7 +53,11 @@ const Chat = (props) => {
         online={otherUser.online}
         sidebar={true}
       />
-      <ChatContent conversation={conversation} />
+      <ChatContent
+        countArrObj={props.ArrOj}
+        conversation={conversation}
+        count={count}
+      />
     </Box>
   );
 };
@@ -45,7 +66,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setActiveChat: (id) => {
       dispatch(setActiveChat(id));
-    }
+    },
   };
 };
 

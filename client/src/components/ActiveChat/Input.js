@@ -38,7 +38,7 @@ const Input = (props) => {
       sender: user,
     };
     postMessage(reqBody);
-    props.getText(reqBody.text);
+
     setText("");
   };
 
